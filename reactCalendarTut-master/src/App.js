@@ -64,7 +64,6 @@ function App() {
                 (d4 <= d3) )
               )
             {   
-                alert("CLASH"); 
                 break;
              }
     
@@ -72,6 +71,8 @@ function App() {
         
         
         setAllEvents([...allEvents, newEvent]);
+        alert("Event has been successfully added!");
+
     }
 
     return (
