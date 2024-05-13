@@ -8,6 +8,15 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "./App.css";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faClock } from '@fortawesome/free-regular-svg-icons';
+import { faCalendarPlus } from '@fortawesome/free-regular-svg-icons';
+import { faXmark } from '@fortawesome/free-solid-svg-icons';
+
+
+
+
+
 
 const locales = {
     "en-US": require("date-fns/locale/en-US"),
@@ -79,9 +88,10 @@ const Popup = ({ event, onDelete, showPopup, setShowPopup, onEdit }) => {
         {isEditing ? (
           <>
             <div>
-              <div>
-                Title:{" "}
+              <div className="popup-inner-header-edit">
+                Event Title:{" "}
                 <input
+                className="EventTitle-popup"
                   type="text"
                   value={editedEvent.title}
                   onChange={(e) =>
@@ -89,44 +99,60 @@ const Popup = ({ event, onDelete, showPopup, setShowPopup, onEdit }) => {
                   }
                 />
               </div>
-              <div>
-                Start:{" "}
-                <DatePicker
-                  selected={editedEvent.start}
-                  onChange={(date) =>
-                    setEditedEvent({ ...editedEvent, start: date })
-                  }
-                  showTimeSelect
-                  dateFormat="MMMM d, yyyy h:mm aa"
-                  timeCaption="Time"
-                />
-              </div>
-              <div>
-                End:{" "}
-                <DatePicker
-                  selected={editedEvent.end}
-                  onChange={(date) =>
-                    setEditedEvent({ ...editedEvent, end: date })
-                  }
-                  showTimeSelect
-                  dateFormat="MMMM d, yyyy h:mm aa"
-                  timeCaption="Time"
-                />
+              <div className="popup-inner-header-edit">
+                <div className="popup-datepicker-container">
+                  <FontAwesomeIcon icon={faClock} className="ClockIcon-popup" />
+                  Start:{" "}
+                  <DatePicker
+                    className="popup-datepicker"
+                    selected={editedEvent.start}
+                    onChange={(date) =>
+                      setEditedEvent({ ...editedEvent, start: date })
+                    }
+                    showTimeSelect
+                    dateFormat="MMMM d, yyyy h:mm aa"
+                    timeCaption="Time"
+                  />
+                </div>
+                <div className="popup-datepicker-container">
+                <FontAwesomeIcon icon={faClock} className="ClockIcon-popup" />
+                  End:{" "}
+                  <DatePicker
+                    className="popup-datepicker"
+                    selected={editedEvent.end}
+                    onChange={(date) =>
+                      setEditedEvent({ ...editedEvent, end: date })
+                    }
+                    showTimeSelect
+                    dateFormat="MMMM d, yyyy h:mm aa"
+                    timeCaption="Time"
+                  />
+                </div>
               </div>
             </div>
-            <button onClick={handleSave}>Save</button>
-            <button onClick={handleClose}>Cancel</button>
+            <button onClick={handleClose} className="Edit-btn">Cancel</button>
+            <button onClick={handleSave} className="Delete-btn">Save</button>
+           
           </>
         ) : (
           <>
-            <div>
-              <div>Title: {event.title}</div>
-              <div>Start: {format(event.start, "MMMM d, yyyy h:mm a")}</div>
-              <div>End: {format(event.end, "MMMM d, yyyy h:mm a")}</div>
+           <div className="popup-inner-header">
+           <FontAwesomeIcon icon={faXmark} className="closeIcon" onClick={handleClose} />
+              <div className="popup-inner-pair">
+                <div className="popup-inner-title">Event Title:</div>
+                <p className="popup-inner-value">{event.title}</p>
+              </div>
+              <div className="popup-inner-pair">
+                <div className="popup-inner-title">Start:</div>
+                <p className="popup-inner-value">{format(event.start, "MMMM d, yyyy h:mm a")}</p>
+              </div>
+              <div className="popup-inner-pair">
+                <div className="popup-inner-title">End:</div>
+                <p className="popup-inner-value">{format(event.end, "MMMM d, yyyy h:mm a")}</p>
+              </div>
             </div>
-            <button onClick={handleEdit}>Edit</button>
-            <button onClick={handleDelete}>Delete</button>
-            <button onClick={handleClose}>Close</button>
+            <button onClick={handleEdit} className="Edit-btn">Edit</button>
+            <button onClick={handleDelete} className="Delete-btn">Delete</button>
           </>
         )}
       </div>
@@ -163,10 +189,6 @@ function App() {
     setAllEvents([...allEvents, newEvent]);
     alert("Event has been successfully added!");
 
-        
-        
-        setAllEvents([...allEvents, newEvent]);
-        alert("Event has been successfully added!");
 
     }
 
@@ -189,55 +211,66 @@ function App() {
         setPopupEvent(event);
         setShowPopup(true);
       }
+      
     
       return (
         <div className="App">
-          <h1>Calendar</h1>
-          <h2>Add New Event</h2>
-          <div>
+          <div className="Header">Event Scheduler</div>
+          <div className="AddEventGrp">
+          <h2 className="AddHeader">Add New Event</h2>
+
+          <FontAwesomeIcon icon={faCalendarPlus} className="EventIcon" />
             <input
+            className="EventTitle"
               type="text"
               placeholder="Add Title"
-              style={{ width: "20%", marginRight: "10px" }}
               value={newEvent.title}
               onChange={(e) =>
                 setNewEvent({ ...newEvent, title: e.target.value })
               }
             />
-            <DatePicker
-              placeholderText="Start Date"
-              selected={newEvent.start}
-              onChange={(date) => setNewEvent({ ...newEvent, start: date })}
-              showTimeSelect
-              timeFormat="HH:mm"
-              timeIntervals={15}
-              dateFormat="MMMM d, yyyy h:mm aa"
-              timeCaption="Time"
-              style={{ marginRight: "10px" }}
-            />
-            <DatePicker
-              placeholderText="End Date"
-              selected={newEvent.end}
-              onChange={(date) => setNewEvent({ ...newEvent, end: date })}
-              showTimeSelect
-              timeFormat="HH:mm"
-              timeIntervals={15}
-              dateFormat="MMMM d, yyyy h:mm aa"
-              timeCaption="Time"
-              style={{ marginRight: "10px" }}
-            />
-            <button onClick={handleAddEvent}>Add Event</button>
+            <br></br>
+            <div className="DateInput">
+                <FontAwesomeIcon icon={faClock} className="ClockIcon" />
+                <DatePicker
+                  className="StartDate"
+                  placeholderText="Start Date"
+                  selected={newEvent.start}
+                  onChange={(date) => setNewEvent({ ...newEvent, start: date })}
+                  showTimeSelect
+                  timeFormat="HH:mm"
+                  timeIntervals={15}
+                  dateFormat="MMMM d, yyyy h:mm aa"
+                  timeCaption="Time"
+                />
+                <DatePicker
+                  className="EndDate"
+                  placeholderText="End Date"
+                  selected={newEvent.end}
+                  onChange={(date) => setNewEvent({ ...newEvent, end: date })}
+                  showTimeSelect
+                  timeFormat="HH:mm"
+                  timeIntervals={15}
+                  dateFormat="MMMM d, yyyy h:mm aa"
+                  timeCaption="Time"
+                />
+              </div>
+                    <br></br>
+                  
+            <button className="submit-btn" onClick={handleAddEvent}>Add Event</button>
           </div>
-          <Calendar
-            localizer={localizer}
-            events={allEvents}
-            startAccessor="start"
-            endAccessor="end"
-            onSelectEvent={handleEventClick}
-            selectable={true}
-            views={["month", "week", "day"]}
-            style={{ height: 500, margin: "50px" }}
-          />
+          <div className="Calendar">
+            <Calendar
+              localizer={localizer}
+              events={allEvents}
+              startAccessor="start"
+              endAccessor="end"
+              onSelectEvent={handleEventClick}
+              selectable={true}
+              views={["month", "week", "day"]}
+              style={{ height: 800, margin: "50px"}}
+            />
+          </div>
           <Popup
             event={popupEvent}
             onDelete={handleDeleteEvent}

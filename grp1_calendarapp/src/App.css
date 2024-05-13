@@ -1,7 +1,163 @@
+@import url('https://fonts.googleapis.com/css2?family=Alata&family=DM+Serif+Display:ital@0;1&family=Permanent+Marker&display=swap');
+
+.alata-regular {
+	font-family: "Alata", sans-serif;
+	font-weight: 400;
+	font-style: normal;
+  }
+
+.dm-serif-display-regular {
+	font-family: "DM Serif Display", serif;
+	font-weight: 400;
+	font-style: normal;
+}
+
+.permanent-marker-regular {
+	font-family: "Permanent Marker", cursive;
+	font-weight: 400;
+	font-style: normal;
+  }
+
+
 .App {
 	text-align: center;
 }
 
+body{
+	background-color: #f1dbd6;
+}
+
+
+/* ----------------- CALENDAR  -----------------*/
+.Calendar{
+	padding: 4px;
+	margin-top: 20px;
+	margin-bottom: 100px;
+	
+}
+
+.rbc-month-view{
+	border: 3px solid;
+	background-color: rgb(255, 255, 255);
+}
+/* NOT WORKING!!!!!!! */
+
+.rbc-btn-group{
+	background-color: white;
+}
+
+
+/* month header */
+.rbc-toolbar-label{
+	font-family: "DM Serif Display", serif;
+	font-size: 80px;
+	color: #0c1c3e;
+	
+}
+.rbc-month-header{
+	font-size: 30px;
+	color: #8a776a;
+}
+
+.rbc-button-link {
+	font-size: 15px;
+	font-weight: 600;
+	margin-top: 10px;
+	color: #b19a89;
+}
+
+/* CALENDAR WEEK VIEW */
+	.rbc-time-view{
+		border: 3px solid;
+		background-color: white;
+	}
+	.rbc-row.rbc-time-header-cell{
+		height: 50px;
+	}
+	
+	.rbc-timeslot-group{
+	font-size: 15px;
+	font-weight: 600;
+	}
+
+	.rbc-event-content{
+		font-family: Alata, sans-serif;
+		font-size: 13px;
+	}
+
+/* ----------------- ADD EVENT  -----------------*/
+.AddHeader{
+	COLOR: white;
+	margin-top: -20px;
+}
+.AddEventGrp{
+	background-color: #8a776a;;
+	padding: 30px 20px;
+	margin-left: 400px;
+	margin-right: 400px;
+}
+
+.EventTitle{
+	border-radius: 5px;
+	padding:8px;
+	text-align: left;
+	width: 330px;
+}
+
+.DateInput{
+	display: flex;
+	border-radius: 5px;
+	padding:8px;
+	width: 150px;
+	margin-top: 10px;
+}
+.StartDate{
+	border-radius: 5px;
+	padding:8px;
+	width: 150px;
+	margin-left: 10px;
+}
+
+.EndDate{
+	border-radius: 5px;
+	padding:8px;
+	width: 150px;
+	margin-left: 15px;
+}
+
+.EventIcon{
+	color: white;
+	margin-right: 10px;
+	height: 20px;
+}
+
+.ClockIcon{
+	color: white;
+	height: 20px;
+	margin-top: 10px;
+	margin-left: 83px;
+}
+
+.submit-btn{
+	border-radius: 5px;
+	font-family: Alata, sans-serif;
+	padding:2px 5px;
+	width: 120px;
+	font-size: 15px;
+	font-weight: 600;
+	background-color: white;
+	margin-top: 10px;
+	transition: white 0.3s;
+}
+
+.submit-btn:hover {
+	background-color: #0c1c3e;
+	color: white;
+}
+
+
+
+/* ----------------- POP UP WINDOW  -----------------*/
 .popup {
 	position: fixed;
 	top: 0;
@@ -12,11 +168,132 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	z-index: 5;
   }
 
   .popup-content {
-	background-color: white;
+	background-color: #f1dbd6;
 	padding: 20px;
 	border-radius: 5px;
 	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+	width: 600px;
+	height: 240px;
   }
+
+  .popup-inner-header {
+	display: flex;
+	flex-direction: column; /* Stack pairs vertically */
+	font-family: Alata, sans-serif;
+	font-weight: 600;
+	font-size: 25px;
+	margin-left: 20px;
+	color: #8a776a;
+  }
+  
+  .popup-inner-pair {
+	display: flex;
+	align-items: center; /* Align items vertically */
+	margin-bottom: -20px;
+  }
+  
+  .popup-inner-title {
+	margin-right: 10px; /* Add some space between the label and the value */
+  }
+  
+  .popup-inner-value {
+	font-size: 19px;
+	font-weight: 300;
+	color: black;
+	font-family: Alata, sans-serif;
+  }
+
+  .closeIcon{
+	margin-left: 500px;
+	cursor: pointer;
+	transition: 0.3s;
+  }
+
+  .closeIcon:hover {
+	/* Add hover effect */
+	color: #0c1c3e; /* For example, change the color on hover */
+  }
+
+  .Delete-btn{
+	border-radius: 5px;
+	font-family: Alata, sans-serif;
+	padding:2px 5px;
+	width: 120px;
+	font-size: 15px;
+	font-weight: 600;
+	background-color: white;
+	margin-top: 30px;
+	transition: white 0.3s;
+	cursor: pointer;
+  }
+  .Delete-btn:hover {
+	background-color: #0c1c3e;
+	color: white;
+}
+
+  .Edit-btn{
+	border-radius: 5px;
+	font-family: Alata, sans-serif;
+	padding:2px 5px;
+	width: 120px;
+	font-size: 15px;
+	font-weight: 600;
+	background-color: white;
+	margin-top: 30px;
+	transition: white 0.3s;
+	cursor: pointer;
+	margin-right:30px ;
+  }
+
+  .Edit-btn:hover {
+	background-color: #0c1c3e;
+	color: white;
+}
+
+.ClockIcon-popup{
+	margin-top: 20px;
+	margin-right: 10px;
+}
+
+.EventTitle-popup{
+	border-radius: 5px;
+	padding:8px;
+	text-align: left;
+	width: 330px;
+	display: flex;
+	justify-content: center;
+	margin-left: 140px;
+}
+
+.popup-datepicker{
+	position: relative;
+	border-radius: 5px;
+	padding:8px;
+	width: 150px;
+	margin-top: 10px;
+	margin-right: 20px;
+}
+
+.popup-inner-header-edit{
+	font-family: Alata, sans-serif;
+	font-weight: 600;
+	font-size: 25px;
+	margin-left: -20px;
+	color: #8a776a;
+	display: flex;
+	flex-direction: column;
+}
+
+
+.Header{
+	color: #0c1c3e;
+	font-size: 60px;
+	font-family: Permanent Marker;
+	background-color: #ffffff;
+	margin-bottom: 50px;
+	padding: 30px;
+}
