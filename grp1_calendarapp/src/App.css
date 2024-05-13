@@ -91,7 +91,7 @@ body{
 	margin-top: -20px;
 }
 .AddEventGrp{
-	background-color: #8a776a;;
+	background-color: #8a776a;
 	padding: 30px 20px;
 	margin-left: 400px;
 	margin-right: 400px;
@@ -122,7 +122,7 @@ body{
 	border-radius: 5px;
 	padding:8px;
 	width: 150px;
-	margin-left: 15px;
+	margin-left: 10px;
 }
 
 .EventIcon{
@@ -135,7 +135,7 @@ body{
 	color: white;
 	height: 20px;
 	margin-top: 10px;
-	margin-left: 83px;
+	margin-left: 220px;
 }
 
 .submit-btn{
@@ -297,3 +297,26 @@ body{
 	margin-bottom: 50px;
 	padding: 30px;
 }
+
+.ReactModal__Overlay {
+	margin-left: 550px;
+	margin-right: 550px;
+	margin-bottom: 550px;
+	margin-top: 40px;
+	align-content: center;
+  }
+
+  .ReactModal__Content h2, p{
+	text-align: center;
+  }
+
+  .ReactModal__Content button {
+	margin: 0 auto; 
+	display: block; 
+	padding: 10px 20px; 
+	background-color: #b19a89;
+	color: white; 
+	border: none; 
+	border-radius: 5px;
+	cursor: pointer;
+  }
