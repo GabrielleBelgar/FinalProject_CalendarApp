@@ -8,6 +8,7 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "./App.css";
+import Popup from "./Popup";
 import ErrorModal from "./ErrorModal";
 import SuccessModal from "./SuccessModal";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -34,131 +35,38 @@ const events = [
     allDay: true,
     start: new Date(2021, 6, 0),
     end: new Date(2021, 6, 0),
+    style: { backgroundColor: "#f00" },
+    category: "meeting",
   },
   {
     id: 1,
     title: "Vacation",
     start: new Date(2021, 6, 7),
     end: new Date(2021, 6, 10),
+    style: { backgroundColor:"#0f0" },
+    category: "vacation",
   },
   {
     id: 2,
     title: "Conference",
     start: new Date(2021, 6, 20),
     end: new Date(2021, 6, 23),
+    style: { backgroundColor: "#00f" },
+    category: "conference",
   },
 ];
 
-const Popup = ({ event, onDelete, showPopup, setShowPopup, onEdit }) => {
-  // Check if event is null or undefined
-  if (!showPopup || !event) {
-    return null;
-  }
-
-  // Initialize editedEvent with event if not editing
-  const [editedEvent, setEditedEvent] = useState(event);
-  // Initialize isEditing state to false
-  const [isEditing, setIsEditing] = useState(false);
-
-  const handleEdit = () => {
-    setIsEditing(true);
-  };
-
-  const handleSave = () => {
-    onEdit(editedEvent);
-    setShowPopup(false);
-  };
-
-  const handleDelete = () => {
-    onDelete(event.id);
-    setShowPopup(false);
-  };
-
-  const handleClose = () => {
-    setShowPopup(false);
-  };
-
-  return (
-    <div className="popup">
-      <div className="popup-content">
-        {isEditing ? (
-          <>
-            <div>
-              <div className="popup-inner-header-edit">
-                Event Title:{" "}
-                <input
-                className="EventTitle-popup"
-                  type="text"
-                  value={editedEvent.title}
-                  onChange={(e) =>
-                    setEditedEvent({ ...editedEvent, title: e.target.value })
-                  }
-                />
-              </div>
-              <div className="popup-inner-header-edit">
-                <div className="popup-datepicker-container">
-                  <FontAwesomeIcon icon={faClock} className="ClockIcon-popup" />
-                  Start:{" "}
-                  <DatePicker
-                    className="popup-datepicker"
-                    selected={editedEvent.start}
-                    onChange={(date) =>
-                      setEditedEvent({ ...editedEvent, start: date })
-                    }
-                    showTimeSelect
-                    dateFormat="MMMM d, yyyy h:mm aa"
-                    timeCaption="Time"
-                  />
-                </div>
-                <div className="popup-datepicker-container">
-                <FontAwesomeIcon icon={faClock} className="ClockIcon-popup" />
-                  End:{" "}
-                  <DatePicker
-                    className="popup-datepicker"
-                    selected={editedEvent.end}
-                    onChange={(date) =>
-                      setEditedEvent({ ...editedEvent, end: date })
-                    }
-                    showTimeSelect
-                    dateFormat="MMMM d, yyyy h:mm aa"
-                    timeCaption="Time"
-                  />
-                </div>
-              </div>
-            </div>
-            <button onClick={handleClose} className="Edit-btn">Cancel</button>
-            <button onClick={handleSave} className="Delete-btn">Save</button>
-           
-          </>
-        ) : (
-          <>
-           <div className="popup-inner-header">
-           <FontAwesomeIcon icon={faXmark} className="closeIcon" onClick={handleClose} />
-              <div className="popup-inner-pair">
-                <div className="popup-inner-title">Event Title:</div>
-                <p className="popup-inner-value">{event.title}</p>
-              </div>
-              <div className="popup-inner-pair">
-                <div className="popup-inner-title">Start:</div>
-                <p className="popup-inner-value">{format(event.start, "MMMM d, yyyy h:mm a")}</p>
-              </div>
-              <div className="popup-inner-pair">
-                <div className="popup-inner-title">End:</div>
-                <p className="popup-inner-value">{format(event.end, "MMMM d, yyyy h:mm a")}</p>
-              </div>
-            </div>
-            <button onClick={handleEdit} className="Edit-btn">Edit</button>
-            <button onClick={handleDelete} className="Delete-btn">Delete</button>
-          </>
-        )}
-      </div>
-    </div>
-  );
-};
 
 
 function App() {
-  const [newEvent, setNewEvent] = useState({ id: Date.now(), title: "", start: "", end: "" });
+  const [newEvent, setNewEvent] = useState({
+    id: Date.now(),
+    title: "",
+    start: new Date(),
+    end: new Date(),
+    category: "",
+    color: "",
+  });
   const [allEvents, setAllEvents] = useState(events);
   const [showPopup, setShowPopup] = useState(false);
   const [popupEvent, setPopupEvent] = useState(null);
@@ -167,50 +75,106 @@ function App() {
   const [modalMessage, setModalMessage] = useState("");
 
   const handleAddEvent = () => {
-    if (!newEvent.title || !newEvent.start || !newEvent.end) {
+    if (
+      !newEvent.title ||
+      !newEvent.start ||
+      !newEvent.end ||
+      !newEvent.category ||
+      !newEvent.color ||
+      JSON.stringify(newEvent) === JSON.stringify({
+        id: Date.now(),
+        title: "",
+        start: null,
+        end: null,
+        category: "",
+        color: "",
+      })
+    ) {
       setModalMessage("Please fill in all fields to add an event.");
       setErrorModalOpen(true);
       return;
     }
-
-    for (let i = 0; i < allEvents.length; i++) {
-      const d1 = new Date(allEvents[i].start);
-      const d2 = new Date(newEvent.start);
-      const d3 = new Date(allEvents[i].end);
-      const d4 = new Date(newEvent.end);
-
-      if (((d1 <= d2) && (d2 <= d3)) || ((d1 <= d4) && (d4 <= d3))) {
-        setModalMessage("Event time overlaps with an existing event.");
-        setErrorModalOpen(true);
-        return;
-      }
+  
+    const overlappingEvents = allEvents.filter(
+      (event) =>
+        !(
+          new Date(newEvent.start) >= event.end ||
+          new Date(newEvent.end) <= event.start
+        )
+    );
+  
+    if (overlappingEvents.length > 0) {
+      setModalMessage("Event time overlaps with an existing event.");
+      setErrorModalOpen(true);
+      return;
     }
-
-    setAllEvents([...allEvents, newEvent]);
+  
+    const newEventWithDates = {
+      ...newEvent,
+      start: new Date(new Date(newEvent.start).setHours(
+        new Date(newEvent.start).getHours(),
+        new Date(newEvent.start).getMinutes(),
+        0,
+        0
+      )),
+      end: new Date(new Date(newEvent.end).setHours(
+        new Date(newEvent.end).getHours(),
+        new Date(newEvent.end).getMinutes(),
+        0,
+        0
+      )),
+      style: { backgroundColor: newEvent.color }, // set the style property to include the color property
+    };
+  
+    // Add the new category to the allEvents array if it doesn't already exist
+    if (!allEvents.some((event) => event.category === newEvent.category)) {
+      setAllEvents([...allEvents, newEventWithDates]);
+    }
+  
+    setAllEvents([...allEvents, newEventWithDates]);
     setSuccessModalOpen(true);
     setModalMessage("Event has been successfully added!");
+    setNewEvent({ id:Date.now(), title: "", start: new Date(), end: new Date(), category: "", color: "" });
+  };
+
+  const handleCancelEvent = () => {
+    setNewEvent({ id: Date.now(), title: "", start: new Date(), end: new Date(), category: "", color: "" });
   };
 
   const handleDeleteEvent = (id) => {
     const updatedEvents = allEvents.filter((event) => event.id !== id);
     setAllEvents(updatedEvents);
+    setShowPopup(false);
     setSuccessModalOpen(true);
     setModalMessage("Event has been successfully deleted!");
   };
 
-  const handleEditEvent = (editedEvent) => {
+  function handleEditEvent(editedEvent) {
     const updatedEvents = allEvents.map((event) =>
-      event.id === editedEvent.id ? editedEvent : event
+      event.id === editedEvent.id ? { ...editedEvent, style: { backgroundColor: editedEvent.style.backgroundColor } } : event
     );
     setAllEvents(updatedEvents);
     setShowPopup(false);
     setSuccessModalOpen(true);
     setModalMessage("Event has been successfully edited!");
-  };
+    setNewEvent({ id: Date.now(), title: "", start: new Date(), end: new Date(), category: "", color: "" });
+  }
 
   const handleEventClick = (event) => {
     setPopupEvent(event);
     setShowPopup(true);
+  };
+
+// Modify the eventStyleGetter function to use the color property of the event if it exists,or a default color otherwise
+  const eventStyleGetter = (event) => {
+    if (!event) {
+      return {};
+    }
+    return {
+      style: {
+        backgroundColor: event.style?.backgroundColor || "", // add nullish coalescing operator to avoid undefined error
+      },
+    };
   };
 
   return (
@@ -254,29 +218,52 @@ function App() {
               dateFormat="MMMM d, yyyy h:mm aa"
               timeCaption="Time"
             />
+            <input
+              type="text"
+              placeholder="Category name"
+              value={newEvent.category}
+              onChange={(e) =>
+                setNewEvent({ ...newEvent, category: e.target.value })
+              }
+            />
+            <input
+              type="color"
+              value={newEvent.color}
+              onChange={(e) =>
+                setNewEvent({ ...newEvent, color: e.target.value })
+              }
+            />
           </div>
                 <br></br>
                 <button className="submit-btn" onClick={handleAddEvent}>Add Event</button>
+                <button onClick={handleCancelEvent}>Cancel</button>
           </div>
           <div className="Calendar">
-      <Calendar
+        <Calendar
+        selectable
         localizer={localizer}
         events={allEvents}
+        onSelectEvent={(event) => handleEventClick(event)}
+        onSelectSlot={(slotInfo) =>
+          setNewEvent({
+            ...newEvent,
+            start: slotInfo.start,
+            end:slotInfo.end,
+          })
+        }
         startAccessor="start"
         endAccessor="end"
-        onSelectEvent={handleEventClick}
-        selectable={true}
-        views={["month", "week", "day"]}
-        style={{ height: 500, margin: "50px" }}
+        style={{ height: 500 }}
+        eventPropGetter={eventStyleGetter}
       />
-      </div>
-      <Popup
-        event={popupEvent}
-        onDelete={handleDeleteEvent}
-        onEdit={handleEditEvent}
-        showPopup={showPopup}
-        setShowPopup={setShowPopup}
-      />
+      {showPopup && (
+        <Popup
+          event={popupEvent}
+          setShowPopup={setShowPopup}
+          onDeleteEvent={handleDeleteEvent}
+          onEditEvent={handleEditEvent}
+        />
+      )}
       <ErrorModal
         isOpen={errorModalOpen}
         onClose={() => setErrorModalOpen(false)}
@@ -287,6 +274,7 @@ function App() {
         onClose={() => setSuccessModalOpen(false)}
         message={modalMessage}
       />
+      </div>
     </div>
   );
 }
