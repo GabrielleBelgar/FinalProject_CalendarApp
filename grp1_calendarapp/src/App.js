@@ -218,7 +218,10 @@ function App() {
               dateFormat="MMMM d, yyyy h:mm aa"
               timeCaption="Time"
             />
+        </div>
+        <div>
             <input
+            className="category"
               type="text"
               placeholder="Category name"
               value={newEvent.category}
@@ -235,8 +238,8 @@ function App() {
             />
           </div>
                 <br></br>
+                <button onClick={handleCancelEvent} className="Cancel">Cancel</button>
                 <button className="submit-btn" onClick={handleAddEvent}>Add Event</button>
-                <button onClick={handleCancelEvent}>Cancel</button>
           </div>
           <div className="Calendar">
         <Calendar
@@ -253,7 +256,7 @@ function App() {
         }
         startAccessor="start"
         endAccessor="end"
-        style={{ height: 500 }}
+        style={{ height: 800 }}
         eventPropGetter={eventStyleGetter}
       />
       {showPopup && (

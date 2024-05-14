@@ -34,12 +34,19 @@ body{
 	margin-top: 20px;
 	margin-bottom: 100px;
 	
+	
+	
 }
 
+.rbc-month-row{
+	height: 500px;
+}
 .rbc-month-view{
 	border: 3px solid;
 	background-color: rgb(255, 255, 255);
 }
+
+
 /* NOT WORKING!!!!!!! */
 
 .rbc-btn-group{
@@ -125,6 +132,12 @@ body{
 	margin-left: 10px;
 }
 
+.category{
+	border-radius: 5px;
+	padding:8px;
+	width: 150px;
+	margin-left: 10px;
+}
 .EventIcon{
 	color: white;
 	margin-right: 10px;
@@ -135,7 +148,7 @@ body{
 	color: white;
 	height: 20px;
 	margin-top: 10px;
-	margin-left: 220px;
+	margin-left: 85px;
 }
 
 .submit-btn{
@@ -150,6 +163,18 @@ body{
 	transition: white 0.3s;
 }
 
+.Cancel{
+		border-radius: 5px;
+		font-family: Alata, sans-serif;
+		padding:2px 5px;
+		width: 120px;
+		font-size: 15px;
+		font-weight: 600;
+		background-color: white;
+		margin-top: 10px;
+		transition: white 0.3s;
+		margin-right: 10px;
+}
 .submit-btn:hover {
 	background-color: #0c1c3e;
 	color: white;
@@ -177,7 +202,7 @@ body{
 	border-radius: 5px;
 	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
 	width: 600px;
-	height: 240px;
+	height: 350px;
   }
 
   .popup-inner-header {
@@ -299,11 +324,12 @@ body{
 }
 
 .ReactModal__Overlay {
-	margin-left: 550px;
-	margin-right: 550px;
-	margin-bottom: 550px;
+	margin-left: 400px;
+	margin-right: 400px;
+	margin-bottom: 300px;
 	margin-top: 40px;
 	align-content: center;
+	
   }
 
   .ReactModal__Content h2, p{
